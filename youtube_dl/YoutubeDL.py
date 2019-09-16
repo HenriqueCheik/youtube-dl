@@ -400,10 +400,11 @@ class YoutubeDL(object):
                     self.report_warning('Could not find fribidi executable, ignoring --bidi-workaround . Make sure that  fribidi  is an executable file in one of the directories in your $PATH.')
                 else:
                     raise
+        not_win32 = (sys.platform != 'win32')
+        not_unicode_filesystem = (sys.getfilesystemencoding() in ['ascii', 'ANSI_X3.4-1968'])
+        not_restrict_filenames = (not params.get('restrictfilenames', False))
 
-        if (sys.platform != 'win32'
-                and sys.getfilesystemencoding() in ['ascii', 'ANSI_X3.4-1968']
-                and not params.get('restrictfilenames', False)):
+        if not_win32 and not_unicode_filesystem and not_restrict_filenames:
             # Unicode filesystem API will throw errors (#1474, #13027)
             self.report_warning(
                 'Assuming --restrict-filenames since file system encoding '
