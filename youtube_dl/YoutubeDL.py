@@ -632,23 +632,44 @@ class YoutubeDL(object):
         except UnicodeEncodeError:
             self.to_screen('[download] The file has already been downloaded')
 
+    def set_template_dict(self, info_dict):
+        template_dict = dict(info_dict)
+        template_dict['epoch'] = int(time.time())
+        template_dict['autonumber'] = self.params.get('autonumber_start', 1) - 1 + self._num_downloads
+        template_dict['resolution'] = self.get_template_resolution(template_dict)
+
+        return template_dict
+
+    def get_autonumber_size(self):
+        autonumber_size = self.params.get('autonumber_size')
+
+        if autonumber_size is None:
+            return 5
+
+        return autonumber_size
+
+    def get_template_resolution(self, template_dict):
+        resolution = template_dict.get('resolution')
+        width = template_dict.get('width')
+        height = template_dict.get('height')
+
+        if resolution is None:
+            if width and height:
+                return '%dx%d' % (width, height)
+
+            elif height:
+                return '%sp' % height
+
+            elif width:
+                return '%dx?' % width
+
+        return resolution
+
     def prepare_filename(self, info_dict):
         """Generate the output filename."""
         try:
-            template_dict = dict(info_dict)
-
-            template_dict['epoch'] = int(time.time())
-            autonumber_size = self.params.get('autonumber_size')
-            if autonumber_size is None:
-                autonumber_size = 5
-            template_dict['autonumber'] = self.params.get('autonumber_start', 1) - 1 + self._num_downloads
-            if template_dict.get('resolution') is None:
-                if template_dict.get('width') and template_dict.get('height'):
-                    template_dict['resolution'] = '%dx%d' % (template_dict['width'], template_dict['height'])
-                elif template_dict.get('height'):
-                    template_dict['resolution'] = '%sp' % template_dict['height']
-                elif template_dict.get('width'):
-                    template_dict['resolution'] = '%dx?' % template_dict['width']
+            autonumber_size = self.get_autonumber_size()
+            template_dict = self.set_template_dict(info_dict)
 
             sanitize = lambda k, v: sanitize_filename(
                 compat_str(v),
