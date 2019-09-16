@@ -341,21 +341,22 @@ class YoutubeDL(object):
 
     def __init__(self, params=None, auto_init=True):
         """Create a FileDownloader object with the given options."""
+        parameters = params
         if params is None:
-            params = {}
+            parameters = {}
         self._ies = []
         self._ies_instances = {}
         self._pps = []
         self._progress_hooks = []
         self._download_retcode = 0
         self._num_downloads = 0
-        self._screen_file = [sys.stdout, sys.stderr][params.get('logtostderr', False)]
+        self._screen_file = [sys.stdout, sys.stderr][parameters.get('logtostderr', False)]
         self._err_file = sys.stderr
         self.params = {
             # Default parameters
             'nocheckcertificate': False,
         }
-        self.params.update(params)
+        self.params.update(parameters)
         self.cache = Cache(self)
 
         def check_deprecated(param, option, suggestion):
