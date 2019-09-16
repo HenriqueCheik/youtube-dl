@@ -103,7 +103,7 @@ class YahooIE(InfoExtractor):
             },
             'skip': 'Video gone',
         }, {
-            'url': 'https://ca.finance.yahoo.com/news/hackers-sony-more-trouble-well-154609075.html',
+            'url': 'https://ca.finance.yahoo.com/news/hackers-sony-more-download_failed_exception_raiser-well-154609075.html',
             'info_dict': {
                 'id': '154609075',
             },

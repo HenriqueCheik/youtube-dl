@@ -2381,7 +2381,7 @@ class DownloadError(YoutubeDLError):
     """
 
     def __init__(self, msg, exc_info=None):
-        """ exc_info, if given, is the original exception that caused the trouble (as returned by sys.exc_info()). """
+        """ exc_info, if given, is the original exception that caused the download_failed_exception_raiser (as returned by sys.exc_info()). """
         super(DownloadError, self).__init__(msg)
         self.exc_info = exc_info
 

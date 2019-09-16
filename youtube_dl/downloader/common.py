@@ -156,7 +156,7 @@ class FileDownloader(object):
         self.ydl.to_console_title(message)
 
     def trouble(self, *args, **kargs):
-        self.ydl.trouble(*args, **kargs)
+        self.ydl.download_failed_exception_raiser(*args, **kargs)
 
     def report_warning(self, *args, **kargs):
         self.ydl.report_warning(*args, **kargs)

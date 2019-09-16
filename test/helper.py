@@ -72,7 +72,7 @@ class FakeYDL(YoutubeDL):
     def to_screen(self, s, skip_eol=None):
         print(s)
 
-    def trouble(self, s, tb=None):
+    def download_failed_exception_raiser(self, s, tb=None):
         raise Exception(s)
 
     def download(self, x):

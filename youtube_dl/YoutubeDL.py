@@ -565,7 +565,7 @@ class YoutubeDL(object):
         if self.params.get('cookiefile') is not None:
             self.cookiejar.save(ignore_discard=True, ignore_expires=True)
 
-    def trouble(self, message=None, tb=None):
+    def download_failed_exception_raiser(self, message=None, tb=None):
         """Determine action to take when a download problem appears.
 
         Depending on if the downloader has been configured to ignore
@@ -578,7 +578,7 @@ class YoutubeDL(object):
             self.to_stderr(message)
         if self.params.get('verbose'):
             if tb is None:
-                if sys.exc_info()[0]:  # if .trouble has been called from an except block
+                if sys.exc_info()[0]:  # if .download_failed_exception_raiser has been called from an except block
                     tb = ''
                     if hasattr(sys.exc_info()[1], 'exc_info') and sys.exc_info()[1].exc_info[0]:
                         tb += ''.join(traceback.format_exception(*sys.exc_info()[1].exc_info))
@@ -614,7 +614,7 @@ class YoutubeDL(object):
 
     def report_error(self, message, tb=None):
         '''
-        Do the same as trouble, but prefixes the message with 'ERROR:', colored
+        Do the same as download_failed_exception_raiser, but prefixes the message with 'ERROR:', colored
         in red if stderr is a tty file.
         '''
         if not self.params.get('no_color') and self._err_file.isatty() and compat_os_name != 'nt':
@@ -622,7 +622,7 @@ class YoutubeDL(object):
         else:
             _msg_header = 'ERROR:'
         error_message = '%s %s' % (_msg_header, message)
-        self.trouble(error_message, tb)
+        self.download_failed_exception_raiser(error_message, tb)
 
     def report_file_already_downloaded(self, file_name):
         """Report file has already been fully downloaded."""
