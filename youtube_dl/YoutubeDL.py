@@ -1171,6 +1171,9 @@ class YoutubeDL(object):
             if last_string:
                 yield tokenize.NAME, last_string, last_start, last_end, last_line
 
+        def is_inside_condition(string, inside_merge, inside_choice):
+            return (inside_merge and string in ['/', ',']) or (inside_choice and string == ',')
+                
         def _parse_format_selection(tokens, inside_merge=False, inside_choice=False, inside_group=False):
             selectors = []
             current_selector = None
@@ -1186,10 +1189,7 @@ class YoutubeDL(object):
                             # ')' will be handled by the parentheses group
                             tokens.restore_last_token()
                         break
-                    elif inside_merge and string in ['/', ',']:
-                        tokens.restore_last_token()
-                        break
-                    elif inside_choice and string == ',':
+                    elif is_inside_condition(string, inside_merge, inside_choice):
                         tokens.restore_last_token()
                         break
                     elif string == ',':
